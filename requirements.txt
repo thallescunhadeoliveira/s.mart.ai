@@ -1,0 +1,10 @@
+streamlit
+pytesseract
+Pillow
+opencv-python
+streamlit-authenticator
+python-dotenv
+sqlalchemy
+langchain
+google-genai
+google-adk

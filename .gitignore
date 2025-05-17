@@ -1,0 +1,21 @@
+# Ambientes virtuais
+venv/
+.env
+*.env
+
+# Arquivos temporários
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+
+# Streamlit cache
+.streamlit/config.toml
+.cache/
+*.log
+
+# Dados sensíveis e arquivos grandes
+data/
+*.jpg
+*.png
+*.pdf
