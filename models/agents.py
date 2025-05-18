@@ -1,7 +1,16 @@
-from prompts import Prompts
 import google.generativeai as genai
 import json
+import os
+import sys
+from google.genai import types
+
+# Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if ROOT_DIR not in sys.path:
+    sys.path.append(ROOT_DIR)
+
 from utils.utils import formata_json, pegar_arquivo
+from models.prompts import Prompts
 
 
 class Agents:
@@ -10,13 +19,13 @@ class Agents:
         self.model = model
         self.prompts = Prompts()
 
-    def agente_leitor(self, arquivo) -> str:
-        #image_data = pegar_arquivo()
-        image_data = arquivo
+    def agente_leitor(self,caminho_arquivo: str) -> str:
+        image_data = pegar_arquivo(caminho_arquivo)
+        # Exibir a resposta
         response = self.client.models.generate_content(
             model=self.model,
             contents=[
-                genai.types.Part.from_bytes(
+                types.Part.from_bytes(
                 data=image_data,
                 mime_type='image/jpeg',
                 ),
