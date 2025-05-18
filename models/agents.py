@@ -57,6 +57,10 @@ class Agents:
 
 
     def agente_analista(self, base_dados: list, pergunta: str) -> str:
+        for doc in base_dados:
+            if '_id' in doc:
+                doc['_id'] = str(doc['_id'])
+
         response = self.client.models.generate_content(
             model=self.model,
             contents=self.prompts.prompt_analista + "\nPergunta usuário: " + pergunta + "\nHistórico de Compras: " + json.dumps(base_dados)
