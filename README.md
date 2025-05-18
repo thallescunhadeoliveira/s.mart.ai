@@ -43,6 +43,10 @@ s.mart.at é uma aplicação web interativa que permite conversar com um chatbot
 - Atualize o arquivo de configuração do projeto (app/config.py ou variável de ambiente) com a string de conexão MongoDB
 - (Opcional) Importe os dados de exemplo com o arquivo data/samples/mongo.py
 
+4. **Rode o Streamlit:**
+
+- streamlit run main.py --server.runOnSave true
+
 
 ### **Considerações Finais**
 O projeto tinha como uma das principais features a leitura e extração de dados de Notas Fiscais, porém não consegui terminar a tempo!
