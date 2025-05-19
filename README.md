@@ -1,8 +1,8 @@
-# s.mart.at - Chatbot Inteligente para Análise de Compras 🛒🤖
+# s.mart.ai - Chatbot Inteligente para Análise de Compras 🛒🤖
 
 ## Sobre o Projeto
 
-s.mart.at é uma aplicação web interativa que permite conversar com um chatbot inteligente baseado em dados reais de histórico de compras armazenados em MongoDB. Através de interações naturais, o usuário pode consultar, analisar e receber respostas contextualizadas a partir do seu histórico de compras.
+s.mart.ai é uma aplicação web interativa que permite conversar com um chatbot inteligente baseado em dados reais de histórico de compras armazenados em MongoDB. Através de interações naturais, o usuário pode consultar, analisar e receber respostas contextualizadas a partir do seu histórico de compras.
 
 ---
 
@@ -54,4 +54,4 @@ Parte do código se encontra no repositório pois planejo continuar o desenvolvi
 
 Se precisar de ajuda ou tiver sugestões, sinta-se à vontade para abrir uma issue ou enviar um pull request!
 
-✨ Obrigado por usar o s.mart.at! ✨
+✨ Obrigado por usar o s.mart.ai! ✨
