@@ -44,7 +44,8 @@ s.mart.ai é uma aplicação web interativa que permite conversar com um chatbot
 - (Opcional) Importe os dados de exemplo com o arquivo data/samples/mongo.py
 
 4. **Rode o Streamlit:**
-
+- Mude para o diretório do app
+- $ cd app
 - streamlit run main.py --server.runOnSave true
 
 
