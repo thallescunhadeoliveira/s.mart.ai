@@ -2,6 +2,7 @@ import json
 import time
 from PIL import Image
 from app.config import client, MODEL_ID
+from datetime import datetime, timezone
 
 
 def construir_historico(chat_history, user_input):
@@ -41,8 +42,10 @@ def formata_json(texto: str) -> str:
 def formata_registro(dicionario_compras: dict) -> list:
     #criar função par definir id
     from models.agents import Agents  
-    agents = Agents(client,MODEL_ID)   
+    agents = Agents(client,MODEL_ID)  
+
     compra_id = str(int(time.time()*1000000))
+    _created = datetime.now(timezone.utc)
     nova_compra = []
     for item in dicionario_compras['itens_comprados']:
         produto = agents.agente_formatacao(item["produto"])
@@ -61,6 +64,7 @@ def formata_registro(dicionario_compras: dict) -> list:
               "estabelecimento": dicionario_compras["estabelecimento"],
               "dados_da_compra": dicionario_compras["dados_da_compra"],
               "totais": dicionario_compras["totais"],
+              "_created": _created
           }
         nova_compra.append(nova_entrada)
     return nova_compra

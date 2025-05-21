@@ -12,7 +12,7 @@ if ROOT_DIR not in sys.path:
 # Imports do projeto
 from models.agents import Agents
 from db import historico_compras
-from utils.utils import construir_historico
+from utils.utils import construir_historico, formata_registro
 from app.config import client, MODEL_ID
 
 
@@ -22,7 +22,7 @@ agents = Agents(client, MODEL_ID)
 def main():
     st.set_page_config(page_title="s.mart.ai - Chatbot", page_icon="🤖")
 
-    st.title("s.mart.at - Chatbot")
+    st.title("s.mart.ai - Chatbot")
     st.write("Converse com o chatbot e envie imagens para ele analisar.")
 
     if "chat_history" not in st.session_state:
@@ -77,7 +77,7 @@ def main():
                     st.error("Não consegui analisar ou comunicar os dados.")
                     print("Erro no agente_analista ou agente_comunicador:", e)
 
-            st.session_state.chat_history.append(("s.mart.at", resposta))
+            st.session_state.chat_history.append(("s.mart.ai", resposta))
             # Limpar input após enviar
             st.session_state.user_input = ""
 
@@ -87,6 +87,52 @@ def main():
     # Botão enviar para quem preferir clicar
     if st.button("Enviar"):
         enviar_mensagem()
+
+    # Upload de imagem
+    uploaded_file = st.file_uploader("Envie uma imagem para o chatbot:", type=["png", "jpg", "jpeg"])
+    if uploaded_file:
+
+        st.write("s.mart.ai recebeu sua imagem! Processando...")
+
+        with st.spinner('👀 Lendo o arquivo...'):
+
+            try:
+                output_arquivo = Image.open(uploaded_file)
+                extracao = agents.agente_leitor(output_arquivo)
+            except Exception as e:
+                st.error("Falha na extração dos dados da imagem.")
+                print("Erro no agente_leitor:", e)
+                resposta = "Não consegui extrair informações da imagem."
+                st.session_state.chat_history.append(("s.mart.ai", resposta))
+                return
+        
+        print(f"Extração: {extracao}")
+
+        with st.spinner('🛠️ Ajustando o arquivo...'):
+            try:
+                registros_formatados = formata_registro(extracao)
+            except Exception as e:
+                st.error("Falha na formatacao dos dados.")
+                print("Erro na função formata_registro:", e)
+                resposta = "Não consegui tratar as informações lidas na imagem."
+                st.session_state.chat_history.append(("s.mart.ai", resposta))
+                return
+
+        print(f"registros_formatados: {registros_formatados}")
+
+        with st.spinner('💾 Salvando dados...'):
+            # Inserir no MongoDB
+            try:
+                result = historico_compras.insert_many(registros_formatados)
+                st.success(f"{len(result.inserted_ids)} itens inseridos no histórico de compras.")
+                resposta = f"{len(result.inserted_ids)} itens foram adicionados ao seu histórico de compras."
+                st.session_state.chat_history.append(("s.mart.ai", resposta))
+            except Exception as e:
+                st.error("Falha ao inserir dados no banco.")
+                print("Erro no insert_many do MongoDB:", e)
+                resposta = "Não consegui salvar os dados no banco de dados."
+                st.session_state.chat_history.append(("s.mart.ai", resposta))
+                return
 
 if __name__ == "__main__":
     main()

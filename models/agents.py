@@ -25,7 +25,7 @@ class Agents:
             model=self.model,
             contents=[self.prompts.prompt_leitor, image_data]
         )
-        descricao_imagem = response.text
+        descricao_imagem = formata_json(response.text)
         return descricao_imagem
     
 
