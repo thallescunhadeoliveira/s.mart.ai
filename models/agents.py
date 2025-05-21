@@ -3,6 +3,7 @@ import json
 import os
 import sys
 from google.genai import types
+from PIL import Image
 
 # Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -19,21 +20,13 @@ class Agents:
         self.model = model
         self.prompts = Prompts()
 
-    def agente_leitor(self,caminho_arquivo: str) -> str:
-        image_data = pegar_arquivo(caminho_arquivo)
-        # Exibir a resposta
+    def agente_leitor(self, image_data: Image.Image) -> str:
         response = self.client.models.generate_content(
             model=self.model,
-            contents=[
-                types.Part.from_bytes(
-                data=image_data,
-                mime_type='image/jpeg',
-                ),
-                self.prompts.prompt_leitor
-            ]
+            contents=[self.prompts.prompt_leitor, image_data]
         )
-        response = formata_json(response)
-        return response
+        descricao_imagem = response.text
+        return descricao_imagem
     
 
     def agente_formatacao(self, item: str) -> str:
