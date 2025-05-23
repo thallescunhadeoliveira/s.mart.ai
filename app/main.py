@@ -20,6 +20,9 @@ from app.config import client, MODEL_ID
 agents = Agents(client, MODEL_ID)
 
 def main():
+    if "imagem_processada" not in st.session_state:
+        st.session_state.imagem_processada = False
+
     st.set_page_config(page_title="s.mart.ai - Chatbot", page_icon="🤖")
 
     st.title("s.mart.ai - Chatbot")
@@ -90,7 +93,7 @@ def main():
 
     # Upload de imagem
     uploaded_file = st.file_uploader("Envie uma imagem para o chatbot:", type=["png", "jpg", "jpeg"])
-    if uploaded_file:
+    if uploaded_file and not st.session_state.imagem_processada:
 
         st.write("s.mart.ai recebeu sua imagem! Processando...")
 
@@ -133,6 +136,15 @@ def main():
                 resposta = "Não consegui salvar os dados no banco de dados."
                 st.session_state.chat_history.append(("s.mart.ai", resposta))
                 return
+        try:            
+            feedback = agents.agente_feedback(registros_formatados)
+            st.session_state.chat_history.append(("s.mart.ai", feedback))
+            st.session_state.imagem_processada = True
+            st.rerun()
+        except Exception as e:
+            st.error("Erro no agente Feedback.")
+            print("Erro no agente Feedback.:", e)
+            return
 
 if __name__ == "__main__":
     main()

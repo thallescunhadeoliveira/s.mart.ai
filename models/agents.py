@@ -40,6 +40,19 @@ class Agents:
         return produto
     
 
+    def agente_feedback(self, itens: list) -> str:
+        for item in itens:
+            if '_id' in item:
+                item['_id'] = str(item['_id'])
+            if '_created' in item:
+                item['_created'] = str(item['_created'])
+        response = self.client.models.generate_content(
+            model=self.model,
+            contents=self.prompts.prompt_feedback + "\nProdutos: " + json.dumps(itens),
+        )
+        return response.text
+    
+
     def agente_buscador(self, pergunta: str) -> str:
         response = self.client.models.generate_content(
             model=self.model,
