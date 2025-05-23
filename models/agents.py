@@ -4,6 +4,7 @@ import os
 import sys
 from google.genai import types
 from PIL import Image
+from datetime import datetime, timezone
 
 # Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -53,6 +54,8 @@ class Agents:
         for doc in base_dados:
             if '_id' in doc:
                 doc['_id'] = str(doc['_id'])
+            if '_created' in doc:
+                doc['_created'] = str(doc['_created'])
 
         response = self.client.models.generate_content(
             model=self.model,
