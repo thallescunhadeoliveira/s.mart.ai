@@ -15,6 +15,7 @@ from db import historico_compras
 from utils.utils import construir_historico, formata_registro
 from app.config import client, MODEL_ID
 
+print(historico_compras)
 
 
 agents = Agents(client, MODEL_ID)
