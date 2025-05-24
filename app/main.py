@@ -1,6 +1,5 @@
 import os
 import sys
-import io
 from PIL import Image
 import streamlit as st
 from pprint import pprint
@@ -21,9 +20,11 @@ from app.config import client, MODEL_ID
 agents = Agents(client, MODEL_ID)
 
 def main():
+    print(st.session_state)
+    # TO DO atualizar esse techo com o nome do ultimo arquivo e checar antes de ler
     if "imagem_processada" not in st.session_state:
         st.session_state.imagem_processada = False
-    st.session_state.imagem_processada = True
+
     st.set_page_config(page_title="s.mart.ai - Chatbot", page_icon="🤖")
 
     st.title("s.mart.ai - Chatbot")
@@ -92,12 +93,13 @@ def main():
     if st.button("Enviar"):
         enviar_mensagem()
 
+
     # Upload de imagem
     uploaded_file = st.file_uploader("Envie uma imagem para o chatbot:", type=["png", "jpg", "jpeg"])
-    if uploaded_file:
-
+  
+    if uploaded_file and st.session_state.imagem_processada != uploaded_file.name:
+        st.session_state.imagem_processada = uploaded_file.name
         st.write("s.mart.ai recebeu sua imagem! Processando...")
-
         with st.spinner('👀 Lendo o arquivo...'):
 
             try:
@@ -111,7 +113,7 @@ def main():
                 return
         
         print(f"Extração: ")
-        pprint({extracao})
+        pprint(extracao)
 
         with st.spinner('🛠️ Ajustando o arquivo...'):
             try:
@@ -124,7 +126,7 @@ def main():
                 return
 
         print(f"registros_formatados: ")
-        pprint({registros_formatados})
+        pprint(registros_formatados)
 
         with st.spinner('💾 Salvando dados...'):
             # Inserir no MongoDB
@@ -143,7 +145,6 @@ def main():
             feedback = agents.agente_feedback(registros_formatados)
             print(feedback)
             st.session_state.chat_history.append(("s.mart.ai", feedback))
-            st.session_state.imagem_processada = True
             st.rerun()
         except Exception as e:
             st.error("Erro no agente Feedback.")
