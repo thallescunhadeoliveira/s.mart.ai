@@ -70,6 +70,7 @@ def main():
 
             elif agente == "agente_buscador":
                 try:
+                    st.write(historico_compras)
                     resultados = list(historico_compras.find({}, {'_id': 0}))
                 except Exception as e:
                     st.error("Houve um problema ao buscar no histórico de compras.")
