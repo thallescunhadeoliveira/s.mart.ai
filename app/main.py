@@ -72,6 +72,7 @@ def main():
                 try:
                     st.write(historico_compras)
                     resultados = list(historico_compras.find({}, {'_id': 0}))
+                    st.write(resultados)
                 except Exception as e:
                     st.error("Houve um problema ao buscar no histórico de compras.")
                     print("Erro no acesso ao MongoDB:", e)
