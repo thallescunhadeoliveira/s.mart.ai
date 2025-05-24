@@ -21,3 +21,4 @@ data/
 *.pdf
 
 uploads/
+secrets.toml

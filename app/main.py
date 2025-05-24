@@ -3,6 +3,7 @@ import sys
 import io
 from PIL import Image
 import streamlit as st
+from pprint import pprint
 
 # Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -22,7 +23,7 @@ agents = Agents(client, MODEL_ID)
 def main():
     if "imagem_processada" not in st.session_state:
         st.session_state.imagem_processada = False
-
+    st.session_state.imagem_processada = True
     st.set_page_config(page_title="s.mart.ai - Chatbot", page_icon="🤖")
 
     st.title("s.mart.ai - Chatbot")
@@ -93,7 +94,7 @@ def main():
 
     # Upload de imagem
     uploaded_file = st.file_uploader("Envie uma imagem para o chatbot:", type=["png", "jpg", "jpeg"])
-    if uploaded_file and not st.session_state.imagem_processada:
+    if uploaded_file:
 
         st.write("s.mart.ai recebeu sua imagem! Processando...")
 
@@ -109,7 +110,8 @@ def main():
                 st.session_state.chat_history.append(("s.mart.ai", resposta))
                 return
         
-        print(f"Extração: {extracao}")
+        print(f"Extração: ")
+        pprint({extracao})
 
         with st.spinner('🛠️ Ajustando o arquivo...'):
             try:
@@ -121,7 +123,8 @@ def main():
                 st.session_state.chat_history.append(("s.mart.ai", resposta))
                 return
 
-        print(f"registros_formatados: {registros_formatados}")
+        print(f"registros_formatados: ")
+        pprint({registros_formatados})
 
         with st.spinner('💾 Salvando dados...'):
             # Inserir no MongoDB
@@ -138,6 +141,7 @@ def main():
                 return
         try:            
             feedback = agents.agente_feedback(registros_formatados)
+            print(feedback)
             st.session_state.chat_history.append(("s.mart.ai", feedback))
             st.session_state.imagem_processada = True
             st.rerun()
