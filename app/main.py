@@ -54,6 +54,7 @@ def main():
 
             try:
                 agente = agents.agente_orquestrador(user_input)
+                print(f"Agente: {agente}")
                 agente = str(agente).strip()
                 if agente not in ("agente_conversador", "agente_buscador"):
                     agente = "agente_conversador"
