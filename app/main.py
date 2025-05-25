@@ -15,6 +15,8 @@ from db import historico_compras
 from utils.utils import construir_historico, formata_registro
 from app.config import client, MODEL_ID
 
+print("Tipo de historico_compras (logo após import):", type(historico_compras))
+
 print(historico_compras)
 
 
@@ -71,10 +73,7 @@ def main():
 
             elif agente == "agente_buscador":
                 try:
-                    st.write(historico_compras)
-                    print("Tipo de historico_compras:", type(historico_compras))
                     resultados = list(historico_compras.find({}, {'_id': 0}))
-                    st.write(resultados)
                 except Exception as e:
                     st.error("Houve um problema ao buscar no histórico de compras.")
                     print("Erro no acesso ao MongoDB:", e)

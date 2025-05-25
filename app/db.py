@@ -9,7 +9,6 @@ if ROOT_DIR not in sys.path:
 from app.config import MONGODB_URI
 
 client = MongoClient(MONGODB_URI)
-print(MONGODB_URI)
 db = client["smartai"]
 
 historico_compras = db["historico_compras"]
