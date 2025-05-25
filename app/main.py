@@ -72,6 +72,7 @@ def main():
             elif agente == "agente_buscador":
                 try:
                     st.write(historico_compras)
+                    print("Tipo de historico_compras:", type(historico_compras))
                     resultados = list(historico_compras.find({}, {'_id': 0}))
                     st.write(resultados)
                 except Exception as e:
