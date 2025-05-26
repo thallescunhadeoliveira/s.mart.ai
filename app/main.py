@@ -15,15 +15,11 @@ from db import historico_compras
 from utils.utils import construir_historico, formata_registro
 from app.config import client, MODEL_ID
 
-print("Tipo de historico_compras (logo após import):", type(historico_compras))
-
-print(historico_compras)
-
 
 agents = Agents(client, MODEL_ID)
 
 def main():
-    print(st.session_state)
+
     # TO DO atualizar esse techo com o nome do ultimo arquivo e checar antes de ler
     if "imagem_processada" not in st.session_state:
         st.session_state.imagem_processada = False
