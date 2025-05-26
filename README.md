@@ -1,9 +1,16 @@
-# 🤖 s.mart.ai - Chatbot Inteligente para Análise de Compras 🛒
+# 🛒 s.mart.ai - Chatbot Inteligente para Análise de Compras 📈
 
 ## 📌 Sobre o Projeto
 
-s.mart.ai é uma aplicação web que permite ao usuário inserir dados sobre compras através de imagens de notas fiscais ou QR code NFE-C, para que consiga registrar suas compras, itens e estabelecimentos, e conversar de forma interativa com um agente de LLM que responde dúvidas e faz análises sobre seu histórico de compra.<br>
-Ex: Quanto gastei em bebidas no último mês? Qual foi a última vez que comprei sabonete?
+🤖 s.mart.ai é uma aplicação web interativa que permite aos usuários registrarem e consultarem seus hábitos de consumo a partir de notas fiscais (imagem ou QR Code NFe-C).<br>
+Com essa ferramenta, você pode:<br>
+- Extrair automaticamente os dados de compras, itens e estabelecimentos;<br>
+- Salvar esse histórico de forma estruturada e anônima;<br>
+- Conversar com uma IA (LLM) que responde perguntas sobre suas compras e oferece análises personalizadas.<br>
+
+🤔 Exemplos de perguntas que o agente responde:
+- “Quanto gastei em bebidas no último mês?”<br>
+- “Qual foi a última vez que comprei sabonete?”<br>
 
 ---
 ## 📋 Teste o Projeto!
@@ -22,7 +29,7 @@ Você pode testar o projeto diretamente pelo Streamlit, sem necessidade de insta
     </button>
   </a>.
 
-
+---
 ## ⚙️ Funcionalidades Principais
 
 ### 📷 Inserção de registros por foto ou QR Code NFE-C
@@ -44,7 +51,6 @@ Você pode testar o projeto diretamente pelo Streamlit, sem necessidade de insta
 - Estes exemplos podem ser importados diretamente na coleção MongoDB para rápida inicialização.
 
 ---
-
 ## 🚀 Instruções de Configuração
 
 ### ✅ Requisitos
@@ -74,6 +80,7 @@ Você pode testar o projeto diretamente pelo Streamlit, sem necessidade de insta
 - $ cd app
 - streamlit run main.py --server.runOnSave true
 
+---
 ## 📁 Estrutura do projeto
 s.mart.ai/<br>
 ├── app/<br>
@@ -98,7 +105,7 @@ s.mart.ai/<br>
 ├── README.md    # Este arquivo<br>
 └── .gitignore<br>
 
-
+---
 ## 👨‍💻 Desenvolvedor
 
 **Thalles Oliveira**  [![GitHub](https://img.shields.io/badge/-000000?style=flat-square&logo=github)](https://github.com/thallescunhadeoliveira) [![LinkedIn](https://img.shields.io/badge/-in-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/thalles-cunha-de-oliveira/)
