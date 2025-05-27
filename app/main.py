@@ -35,11 +35,42 @@ def main():
     # Mostrar o histórico da conversa
     st.markdown("---")
     st.subheader("Histórico da conversa:")
+    # CSS para estilizar os balões
+    st.markdown("""
+    <style>
+    .chat-message {
+        padding: 0.5rem 1rem;
+        margin: 0.25rem 0;
+        border-radius: 0.75rem;
+        max-width: 70%;
+        display: inline-block;
+        word-wrap: break-word;
+    }
+    .user-message {
+        background-color: #DCF8C6;
+        margin-left: auto;
+        text-align: right;
+    }
+    .bot-message {
+        background-color: #F1F0F0;
+        margin-right: auto;
+        text-align: left;
+    }
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Renderiza as mensagens com layout visual
+    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
     for speaker, message in st.session_state.chat_history:
         if speaker == "Você":
-            st.markdown(f"**Você:** {message}")
+            st.markdown(f'<div class="chat-message user-message">{message}</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f"**{speaker}:** {message}")
+            st.markdown(f'<div class="chat-message bot-message"><strong>{speaker}:</strong> {message}</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     # Input do usuário com key fixa e botão que envia também no Enter
     def enviar_mensagem():
