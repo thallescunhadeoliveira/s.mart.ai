@@ -1,7 +1,7 @@
 import json
 import time
 from PIL import Image
-from app.config import client, MODEL_ID
+from app.config import client, MODEL_ID, MODEL_ID_LITE, MODEL_ID_15
 from datetime import datetime, timezone
 
 
@@ -42,13 +42,24 @@ def formata_json(texto: str) -> str:
 def formata_registro(dicionario_compras: dict) -> list:
     #criar função par definir id
     from models.agents import Agents  
-    agents = Agents(client,MODEL_ID)  
+    agents = Agents(client,MODEL_ID_LITE)  
 
     compra_id = str(int(time.time()*1000000))
     _created = datetime.now(timezone.utc)
     nova_compra = []
+    modelos_fallback = [MODEL_ID_15, MODEL_ID]
+    numero_modelo = 0
+    i = 0
     for item in dicionario_compras['itens_comprados']:
-        produto = agents.agente_formatacao(item["produto"])
+        print(f"Item{i}: {item}")
+        i  += 1
+        try:
+            produto = agents.agente_formatacao(item["produto"])
+        except Exception as e:
+            print(f"{e}: Limite de cota da API atingida. Alterando de agente")
+            agents = Agents(client,modelos_fallback[numero_modelo]) 
+            numero_modelo += 1
+            produto = agents.agente_formatacao(item["produto"])           
         nova_entrada = {
               "id_compra": compra_id,
               "nome_produto": produto["nome_produto"],

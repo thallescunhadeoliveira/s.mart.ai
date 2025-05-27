@@ -39,6 +39,8 @@ if not MONGODB_URI:
 from google import genai
 client = genai.Client(api_key=api_key)
 MODEL_ID = "gemini-2.0-flash"
+MODEL_ID_LITE = "gemini-2.0-flash-lite"
+MODEL_ID_15 = "gemini-1.5-flash"
 
 
 
