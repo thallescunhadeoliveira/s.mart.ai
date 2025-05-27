@@ -73,7 +73,7 @@ Você pode testar o projeto diretamente pelo Streamlit, sem necessidade de insta
 - Crie um cluster no MongoDB Atlas ou utilize um servidor local.
 - Crie uma base de dados chamada "smartai" e uma coleção chamada "historico_compras".
 - Atualize o arquivo de configuração do projeto (.env e secrets.toml) com a string de conexão MongoDB
-- (Opcional) Importe os dados de exemplo com o arquivo data/samples/mongo.py
+- (Opcional) Importe os dados de exemplo rodando o arquivo samples/mongo.py
 
 4. **Rode o Streamlit:**
 - Mude para o diretório do app
