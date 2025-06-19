@@ -3,6 +3,8 @@ import time
 from PIL import Image
 from app.config import client, MODEL_ID, MODEL_ID_LITE, MODEL_ID_15
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+import ast
 
 
 def construir_historico(chat_history, user_input):
@@ -59,7 +61,15 @@ def formata_registro(dicionario_compras: dict) -> list:
             print(f"{e}: Limite de cota da API atingida. Alterando de agente")
             agents = Agents(client,modelos_fallback[numero_modelo]) 
             numero_modelo += 1
-            produto = agents.agente_formatacao(item["produto"])           
+            produto = agents.agente_formatacao(item["produto"]) 
+
+        print(type(dicionario_compras["dados_da_compra"]["date"]))
+        data_compra = dicionario_compras["dados_da_compra"]["date"]
+        # data_compra = ast.literal_eval(dicionario_compras["dados_da_compra"]["date"])
+        # print("string convertida em lista")
+        if type(dicionario_compras["dados_da_compra"]["date"]) == list:
+            dicionario_compras["dados_da_compra"]["date"]  = datetime(*data_compra, tzinfo=ZoneInfo("America/Sao_Paulo")) #, tzinfo=ZoneInfo("America/Sao_Paulo")) 
+        print("lista convertida em datetime")         
         nova_entrada = {
               "id_compra": compra_id,
               "nome_produto": produto["nome_produto"],

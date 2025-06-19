@@ -16,8 +16,7 @@ class Prompts:
             "uf": "UF"
         },
         "dados_da_compra": {
-            "data": "DATA",
-            "hora": "HORA",
+            "date": [ANO, MÊS, DIA, HORA, MINUTO, SEGUNDO],
             "numero_cupom": "NÚMERO DO CUPOM",
             "codigo_nota": "CÓDIGO DA NOTA"
         },

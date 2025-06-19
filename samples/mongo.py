@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from datetime import datetime, timezone
 import os
 from dotenv import load_dotenv
+from samples import produtos
 
 
 load_dotenv()
@@ -13,15 +14,10 @@ client = MongoClient(MONGODB_URI)
 db = client["smartai"]
 colecao = db["historico_compras"]
 
-# Ler o arquivo JSON
-with open('samples.json', 'r', encoding='utf-8') as f:
-    dados = json.load(f)  # dados será uma lista de dicionários
-
-for item in dados:
+for item in produtos:
     item["_created"] = datetime.now(timezone.utc)
 
-
 # Inserir os dados na coleção
-resultado = colecao.insert_many(dados)
+resultado = colecao.insert_many(produtos)
 
 print(f"{len(resultado.inserted_ids)} documentos inseridos.")

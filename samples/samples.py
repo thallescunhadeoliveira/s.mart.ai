@@ -1,4 +1,7 @@
-[
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+produtos = [
   {
     "id_compra": "1747510520102862",
     "nome_produto": "PRODUTO ALIMENTÍCIO",
@@ -10,7 +13,7 @@
     "unidade_medida": "UN",
     "valor_unitario": "11,90",
     "valor_total": "23,80",
-    "desconto": null,
+    "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
       "cnpj": "47.508.411/0926-89",
@@ -18,9 +21,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "13:37:34",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "000230954"
     },
     "totais": {
@@ -48,9 +50,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "13:37:34",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "000230954"
     },
     "totais": {
@@ -70,7 +71,7 @@
     "unidade_medida": "UN",
     "valor_unitario": "8,99",
     "valor_total": "8,99",
-    "desconto": null,
+    "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
       "cnpj": "47.508.411/0926-89",
@@ -78,9 +79,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "13:37:34",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "000230954"
     },
     "totais": {
@@ -100,7 +100,7 @@
     "unidade_medida": "UN",
     "valor_unitario": "15,50",
     "valor_total": "15,50",
-    "desconto": null,
+    "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
       "cnpj": "47.508.411/0926-89",
@@ -108,9 +108,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "13:37:34",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "000230954"
     },
     "totais": {
@@ -130,7 +129,7 @@
     "unidade_medida": "UN",
     "valor_unitario": "7,80",
     "valor_total": "7,80",
-    "desconto": null,
+    "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
       "cnpj": "47.508.411/0926-89",
@@ -138,9 +137,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "13:37:34",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "000230954"
     },
     "totais": {
@@ -160,7 +158,7 @@
     "unidade_medida": "UN",
     "valor_unitario": "4,50",
     "valor_total": "9,00",
-    "desconto": null,
+    "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
       "cnpj": "47.508.411/0926-89",
@@ -168,9 +166,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "13:37:34",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "000230954"
     },
     "totais": {
@@ -198,9 +195,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "13:37:34",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "000230954"
     },
     "totais": {
@@ -220,7 +216,7 @@
     "unidade_medida": "UN",
     "valor_unitario": "24,90",
     "valor_total": "24,90",
-    "desconto": null,
+    "desconto": None,
     "estabelecimento": {
       "nome": "Supermercado Bom Preço",
       "cnpj": "12.345.678/0001-90",
@@ -228,8 +224,7 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "10:30:15",
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
       "numero_cupom": "12345",
       "codigo_nota": "0010001"
     },
@@ -258,8 +253,7 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "17/05/2025",
-      "hora": "10:30:15",
+      "date": datetime(2025, 5, 17, 13, 37, 34, tzinfo=ZoneInfo("America/Sao_Paulo")),
       "numero_cupom": "12345",
       "codigo_nota": "0010001"
     },
@@ -280,7 +274,7 @@
     "unidade_medida": "UN",
     "valor_unitario": "12,50",
     "valor_total": "12,50",
-    "desconto": null,
+    "desconto": None,
     "estabelecimento": {
       "nome": "Drogaria Saúde",
       "cnpj": "98.765.432/0001-10",
@@ -288,9 +282,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "16/05/2025",
-      "hora": "15:20:00",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 16, 15, 20, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "0004589"
     },
     "totais": {
@@ -318,9 +311,8 @@
       "uf": "SP"
     },
     "dados_da_compra": {
-      "data": "16/05/2025",
-      "hora": "15:20:00",
-      "numero_cupom": null,
+      "date": datetime(2025, 5, 16, 15, 20, tzinfo=ZoneInfo("America/Sao_Paulo")),
+      "numero_cupom": None,
       "codigo_nota": "0004589"
     },
     "totais": {
@@ -340,7 +332,7 @@
     "unidade_medida": "UN",
     "valor_unitario": "89,90",
     "valor_total": "89,90",
-    "desconto": null,
+    "desconto": None,
     "estabelecimento": {
       "nome": "Tech Store",
       "cnpj": "55.555.555/0001-22",
@@ -348,8 +340,7 @@
       "uf": "RJ"
     },
     "dados_da_compra": {
-      "data": "15/05/2025",
-      "hora": "12:00:00",
+      "date": datetime(2025, 5, 16, 15, 20, tzinfo=ZoneInfo("America/Sao_Paulo")),
       "numero_cupom": "98765",
       "codigo_nota": "0009876"
     },

@@ -46,6 +46,8 @@ class Agents:
                 item['_id'] = str(item['_id'])
             if '_created' in item:
                 item['_created'] = str(item['_created'])
+            if item["dados_da_compra"]['date']:
+                item["dados_da_compra"]['date'] = str(item["dados_da_compra"]['date'])
         response = self.client.models.generate_content(
             model=self.model,
             contents=self.prompts.prompt_feedback + "\nProdutos: " + json.dumps(itens),
@@ -64,12 +66,13 @@ class Agents:
 
 
     def agente_analista(self, base_dados: list, pergunta: str) -> str:
-        for doc in base_dados:
-            if '_id' in doc:
-                doc['_id'] = str(doc['_id'])
-            if '_created' in doc:
-                doc['_created'] = str(doc['_created'])
-
+        for item in base_dados:
+            if '_id' in item:
+                item['_id'] = str(item['_id'])
+            if '_created' in item:
+                item['_created'] = str(item['_created'])
+            if item["dados_da_compra"]['date']:
+                item["dados_da_compra"]['date'] = str(item["dados_da_compra"]['date'])
         response = self.client.models.generate_content(
             model=self.model,
             contents=self.prompts.prompt_analista + "\nPergunta usuário: " + pergunta + "\nHistórico de Compras: " + json.dumps(base_dados)
