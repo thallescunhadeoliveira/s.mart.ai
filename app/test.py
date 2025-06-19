@@ -1,5 +1,9 @@
-import ast
+from db import historico_compras
 
-date_compra = "[2019, 10, 19, 10, 20, 9]"  # tipo: str
-lista = ast.literal_eval(date_compra)     # funciona
-print(type(lista))        # [2019, 10, 19, 10, 20, 9]
+resultados = list(historico_compras.find({}, {'_id': 0}))
+total = 0.0
+for item in resultados:
+    valor_item = item["valor_total"]
+    print(valor_item)
+    total += float(valor_item.replace(",", "."))
+print(total)
