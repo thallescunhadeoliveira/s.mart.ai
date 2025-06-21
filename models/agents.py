@@ -116,4 +116,4 @@ class Agents:
             config = types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY")
         )
 
-        return response.embeddings
+        return response.embeddings[0].values
