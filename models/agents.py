@@ -1,4 +1,3 @@
-import google.generativeai as genai
 import json
 import os
 import sys
@@ -109,3 +108,12 @@ class Agents:
         )
         agente = response.text
         return agente
+    
+    def agente_embedding(self, texto: str, tipo: str) -> list:
+        response = self.client.models.embed_content(
+            model = self.model,
+            contents = texto,
+            config = types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY")
+        )
+
+        return response.embeddings

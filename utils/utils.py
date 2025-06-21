@@ -1,11 +1,19 @@
+import os
+import sys
 import json
 import time
 from PIL import Image
-from app.config import client, MODEL_ID, MODEL_ID_LITE, MODEL_ID_15
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from pymongo.collection import Collection
 import ast
+
+# Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if ROOT_DIR not in sys.path:
+    sys.path.append(ROOT_DIR)
+from app.config import client, MODEL_ID, MODEL_ID_LITE, MODEL_ID_15, MODEL_ID_EMBEDDING
+
 
 
 def construir_historico(chat_history, user_input):
@@ -47,6 +55,18 @@ def converte_float(valor: str) -> float:
     except:
         return None
 
+def converte_embedding(texto: str):
+    print(texto)
+    from models.agents import Agents  
+    try:
+        novo_agente = Agents(client, MODEL_ID_EMBEDDING)
+        embedding = novo_agente.agente_embedding(texto, "RETRIEVAL_DOCUMENT")
+    except Exception as e:
+        print(f"{e}: Falha no agente de embedding")
+        embedding = None
+    print(embedding)
+    return embedding
+
 
 def formata_registro(dicionario_compras: dict) -> list:
     #criar função par definir id
@@ -85,6 +105,9 @@ def formata_registro(dicionario_compras: dict) -> list:
               "nome_produto": produto["nome_produto"],
               "marca": produto["marca"],
               "categoria": produto["categoria"],
+              "nome_produto_embedding": converte_embedding(produto["nome_produto"]),
+              "marca_embedding": converte_embedding(produto["marca"]),
+              "categoria_embedding": converte_embedding(produto["categoria"]),              
               "quantidade_produto": produto["quantidade_produto"],
               "unidade_medida_produto": produto["unidade_medida_produto"],
               "quantidade": converte_float(item["quantidade"]),
