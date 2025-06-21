@@ -100,18 +100,28 @@ def main():
 
             elif agente == "agente_buscador":
                 try:
-                    resultados = list(historico_compras.find({}, {'_id': 0}))
+                    resultados = agents.agente_buscador(user_input, historico_compras)
+                    print(resultados)
                 except Exception as e:
-                    st.error("Houve um problema ao buscar no histórico de compras.")
-                    print("Erro no acesso ao MongoDB:", e)
-                    resultados = []
+                    print("Erro no agente buscador", e)
+                # try:
+                #     resultados = list(historico_compras.find({}, {'_id': 0}))
+                # except Exception as e:
+                #     st.error("Houve um problema ao buscar no histórico de compras.")
+                #     print("Erro no acesso ao MongoDB:", e)
+                #     resultados = []
 
                 try:
                     analise = agents.agente_analista(resultados, user_input)
+                except Exception as e:
+                    st.error("Não consegui analisar os dados.")
+                    print("Erro no agente_analista:", e)
+                    
+                try:
                     resposta = agents.agente_comunicador(analise, user_input)
                 except Exception as e:
-                    st.error("Não consegui analisar ou comunicar os dados.")
-                    print("Erro no agente_analista ou agente_comunicador:", e)
+                    st.error("Não consegui comunicar os dados.")
+                    print("Erro no agente_comunicador:", e)
 
             st.session_state.chat_history.append(("s.mart.ai", resposta))
             # Limpar input após enviar

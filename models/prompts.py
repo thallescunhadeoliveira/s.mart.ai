@@ -171,9 +171,10 @@ class Prompts:
         Sua função **não é montar a query MongoDB diretamente**, mas sim identificar com precisão:
 
         - O **valor que está sendo buscado** (ex: valor_total, dados_da_compra.date, quantidade_produto etc.)
-        - A **forma de agregação desejada**, se houver (ex: soma, média, contagem, contagem distinta, máximo, mínimo etc.)
+        - A **forma de agregação desejada**, se houver, de acomrdo com o padrão MondoDB (ex: "$sum", "$avg", "$count", "$max" etc.)
         - Os **filtros principais**, organizados por tipo (ex: categoria, marca, nome_produto, estabelecimento, dados_da_compra.date etc.)
-        - O **tipo de junção** entre os filtros (ex: "and" ou "or")
+        - O campo **comparacao** sendo o operador de comparação usado na consulta MongoDB (ex: "$eq", "$gt", "$gte", "$ne")
+        - O **tipo de junção** entre os filtros (ex: "$and" ou "$or")
         - Se houver, o **nível de agrupamento** (ex: por "mês", por "ano", por "produto" etc.)
 
         O formato de resposta deve seguir o padrão abaixo seguindo os exemplos:
@@ -183,19 +184,20 @@ class Prompts:
         ```json
         {
         "valor_procurado": "valor_total_produto",
-        "agregacao": "soma",
+        "agregacao": "$sum",
         "filtros": [
             {
             "tipo": "categoria",
             "itens": ["BEBIDAS", "PÃO"],
-            "juncao": "or"
+            "comparacao": "$eq"
             },
             {
             "tipo": "ano",
             "itens": [2024, 2025],
-            "juncao": "and"
+            "comparacao": "$eq"
             }
         ],
+        "juncao": "$and",
         "agrupar_por": "ano"
         }
 
@@ -212,8 +214,8 @@ class Prompts:
             'quantidade': QUANTIDADE DE ITENS COMPRADOS DO PRODUTO: float,
             'unidade_medida': UNIDADE DE MEDIDA DA QUANTIDADE DE ITENS (CONTAGEM, LITROS, KG ETC): str,
             'valor_unitario': VALOR DE CADA UNIDADE: float,
-            'valor_total_produto': VALOR TOTAL PAGO CONSIDERANDO A QUANTIDADE COMPRADA DO ITEM: float,
-            'valor_desconto_produto': TOTAL DE DESCONTO APLICADO AOS ITENS: float,
+            'valor_total': VALOR TOTAL PAGO CONSIDERANDO A QUANTIDADE COMPRADA DO ITEM: float,
+            'desconto': TOTAL DE DESCONTO APLICADO AOS ITENS: float,
             'estabelecimento': { INFORMAÇÕES DO ESTABELECIMENTO DA COMPRA
             'nome': 'RAZÃO SOCIAL DO ESTABELECIMENTO': str,
             'cnpj': 'CNPJ DO ESTABELECIMENTO': str,
@@ -240,13 +242,24 @@ class Prompts:
         Quando a pergunta fizer menção a um supermercado, loja ou nome de estabelecimento, e você não souber o CNPJ correspondente:
             Faça uma busca na internet para descobrir o CNPJ oficial do estabelecimento citado.
             Inclua o filtro estabelecimento.cnpj no JSON, e não o nome textual do supermercado.
-            O CNPJ na consulta deve conter apenas dígitos numérios, sem caracteres como '/-.'
-            Faça um filtro usando apenas os primeiros 8 dígitos do CNPJ, usango regex para trazer para a busca caso o final do CNPJ seja diferente do encontrado na internet.
-            Exemplo:
-            Usuário: Quando foi minha última compra no Carrefour?
-            Resposta (após buscar CNPJ na internet):
-            {"estabelecimento.cnpj": { $regex: "^47508411" }}
-
+        Exemplo:
+        Usuário: Quanto paguei na minha última compra no mercado JAU?
+        Resposta json após busca do CNPJ na internet:
+        ```json
+        {
+        "valor_procurado": "valor_total",
+        "agregacao": "$sum",
+        "filtros": [
+            {
+            "tipo": "estabelecimento.cnpj",
+            "itens": ["03.640.467/0001-94"],
+            "comparacao": "$eq"
+            }
+        ],
+        "juncao": null,
+        "agrupar_por": null
+        }
+        ```
         
         *Exemplos gerais:*
 
@@ -254,45 +267,36 @@ class Prompts:
         Resposta esperada:
         ```json
         {
-        "valor_procurado": "valor_total_produto",
-        "agregacao": "soma",
+        "valor_procurado": "dados_da_compra.date",
+        "agregacao": "$max",
         "filtros": [
             {
             "tipo": "produto",
             "itens": ["ARROZ],
-            "juncao": NONE
+            "comparacao": "$eq"
             }
         ],
-        "agrupar_por": NONE
+        "juncao": null,
+        "agrupar_por": null
         }
 
         Usuário: Quanto gastei com alimentos nos últimos 3 meses, considerando que hoje é o dia 1 de junho de 2025?
-        Resposta json:
-        { "categoria": "ALIMENTOS", "dados_da_compra.data": { "$gte": "2025-03-01", "$lte": "2024-12-31" } }
         Resposta esperada:
         ```json
         {
-        "valor_procurado": "dados_da_compra.date",
-        "agregacao": "máximo",
+        "valor_procurado": "valor_total",
+        "agregacao": "$sum",
         "filtros": [
             {
             "tipo": "dados_da_compra.date",
             "itens": ["2025-03-01"],
-            "juncao": NONE,
-            "filtro": ">="
+            "comparacao": "$gte"
             }
         ],
-        "agrupar_por": NONE
+        "juncao": null,
+        "agrupar_por": null
         }
-
-        Usuário: Quanto paguei na minha última compra no mercado JAU?
-        Resposta json após busca na internet:
-        {"estabelecimento.cnpj": { $regex: "^47508411" }}
-
-        Usuário: Quantos produtos da marca COCA-COLA eu já comprei?
-        Resposta json:
-        { "marca": "COCA-COLA" }
-
+        ```
 
         """
 
@@ -301,19 +305,18 @@ class Prompts:
 
         Entrada:
         - Uma pergunta feita pelo usuário, relacionada ao histórico de compras.
-        - Uma lista de objetos JSON, onde cada objeto representa um item comprado, contendo informações como nome do produto, categoria, quantidade, preço, estabelecimento, data da compra, entre outros.
+        - Uma lista json com um retorno do banco de dados já agregado com a informação necessária para responder à pergunta. 
 
         Sua tarefa:
         - Interpretar corretamente a pergunta.
-        - Analisar a lista de itens para encontrar a resposta mais precisa possível.
+        - Analisar a consulta recebida para encontrar a resposta mais precisa possível.
         - Responder com uma resposta clara e objetiva em linguagem natural, explicando a resposta se necessário.
         - Se a pergunta for sobre totais, datas, valores, frequências, ou produtos específicos, responda com os cálculos corretos e informações detalhadas.
-        - O real de um item é o valor_total_produto menos o valor_desconto_produto dividido pela quantidade de itens comprados.
         - Caso os dados não sejam suficientes para responder, informe que não é possível responder com os dados disponíveis.
         - Não retorne dados brutos ou listas completas, apenas o resultado da análise.
         - Seja conciso, porém completo.
 
-        A estrutura de dados e campos que o você tem acesso é uma lista de objeto onde cada objeto é um item, com os seguintes campos:
+        A estrutura de dados onde os dados são registros no banco de dados é uma lista de objeto onde cada objeto é um item, com os seguintes campos:
 
         {
             'id_compra': IDENTIFICADOR ÚNICO DA COMPRA QUE AGRUPA OS ITENS PELA COMPRA ESPECÍFICA: str,
@@ -325,8 +328,8 @@ class Prompts:
             'quantidade': QUANTIDADE DE ITENS COMPRADOS DO PRODUTO: float,
             'unidade_medida': UNIDADE DE MEDIDA DA QUANTIDADE DE ITENS (CONTAGEM, LITROS, KG ETC): str,
             'valor_unitario': VALOR DE CADA UNIDADE: float,
-            'valor_total_produto': VALOR TOTAL PAGO CONSIDERANDO A QUANTIDADE COMPRADA DO ITEM: float,
-            'valor_desconto_produto': TOTAL DE DESCONTO APLICADO AOS ITENS: float,
+            'valor_total': VALOR TOTAL PAGO CONSIDERANDO A QUANTIDADE COMPRADA DO ITEM: float,
+            'desconto': TOTAL DE DESCONTO APLICADO AOS ITENS: float,
             'estabelecimento': { INFORMAÇÕES DO ESTABELECIMENTO DA COMPRA
             'nome': 'RAZÃO SOCIAL DO ESTABELECIMENTO': str,
             'cnpj': 'CNPJ DO ESTABELECIMENTO': str,
@@ -334,8 +337,7 @@ class Prompts:
             'uf': 'UF DO ESTABELECIMENTO: str'
             }
             'dados_da_compra': { INFORMAÇÕES GERAIS SOBRE A COMPRA
-            'data': DIA EM QUE A COMPRA ACONTECEU: date,
-            'hora': HORÁRIO DA COMPRA A NÍVEL DE HORA; MINUTO E SEGUNDO: time,
+            'date': DIA E HORÁRIO EM QUE A COMPRA ACONTECEU: datetime,
             'numero_cupom': NÚMERO DO CUPOM FISCAL: str,
             'codigo_nota': NÚMERO DA NOTA: str
             }
@@ -346,6 +348,8 @@ class Prompts:
             'forma_pagamento': FORMA DE PAGAMENTO DA COMPRA: str
             }
         }
+
+        Importante: Você receberá apenas o resultado da consulta, agregando os dados ou sumarizando.
 
         Exemplo:
         Pergunta: "Quando foi a última vez que comprei arroz?"

@@ -11,7 +11,7 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if ROOT_DIR not in sys.path:
     sys.path.append(ROOT_DIR)
 
-from utils.utils import formata_json, pegar_arquivo
+from utils.utils import formata_json, filtrar_dados
 from models.prompts import Prompts
 
 
@@ -55,27 +55,30 @@ class Agents:
         return response.text
     
 
-    def agente_buscador(self, pergunta: str) -> str:
+    def agente_buscador(self, pergunta: str, dados: dict) -> str:
         response = self.client.models.generate_content(
             model=self.model,
             contents=self.prompts.prompt_buscador + "\nPergunta: " + pergunta,
             config={"tools": [{"google_search": {}}]}
         )
         consulta = formata_json(response.text)
-        return consulta
+        dados_filtrados = filtrar_dados(consulta, dados)
+        return dados_filtrados
 
 
     def agente_analista(self, base_dados: list, pergunta: str) -> str:
         for item in base_dados:
             if '_id' in item:
                 item['_id'] = str(item['_id'])
-            if '_created' in item:
-                item['_created'] = str(item['_created'])
-            if item["dados_da_compra"]['date']:
-                item["dados_da_compra"]['date'] = str(item["dados_da_compra"]['date'])
+            if 'retorno' in item:
+                item['retorno'] = str(item['retorno'])
+            # if '_created' in item:
+            #     item['_created'] = str(item['_created'])
+            # if item["dados_da_compra"]['date']:
+            #     item["dados_da_compra"]['date'] = str(item["dados_da_compra"]['date'])
         response = self.client.models.generate_content(
             model=self.model,
-            contents=self.prompts.prompt_analista + "\nPergunta usuário: " + pergunta + "\nHistórico de Compras: " + json.dumps(base_dados)
+            contents=self.prompts.prompt_analista + "\nPergunta usuário: " + pergunta + "\nRetorno da Consulta: " + json.dumps(base_dados)
         )
         analise = response.text
         return analise

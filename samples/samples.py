@@ -9,10 +9,10 @@ produtos = [
     "categoria": "ALIMENTOS",
     "quantidade_produto": 300,
     "unidade_medida_produto": "g",
-    "quantidade": "2",
+    "quantidade": 2,
     "unidade_medida": "UN",
-    "valor_unitario": "11,90",
-    "valor_total": "23,80",
+    "valor_unitario": 11.90,
+    "valor_total": 23.80,
     "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
@@ -26,8 +26,8 @@ produtos = [
       "codigo_nota": "000230954"
     },
     "totais": {
-      "valor_total": "45,69",
-      "valor_pago": "42,78",
+      "valor_total": 45.69,
+      "valor_pago": 42.78,
       "forma_pagamento": "CARTAOON"
     }
   },
@@ -38,11 +38,11 @@ produtos = [
     "categoria": "FRUTAS",
     "quantidade_produto": 500,
     "unidade_medida_produto": "g",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "UN",
-    "valor_unitario": "12,90",
-    "valor_total": "12,90",
-    "desconto": "-2,91",
+    "valor_unitario": 12.90,
+    "valor_total": 12.90,
+    "desconto": -2.91,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
       "cnpj": "47.508.411/0926-89",
@@ -55,8 +55,8 @@ produtos = [
       "codigo_nota": "000230954"
     },
     "totais": {
-      "valor_total": "45,69",
-      "valor_pago": "42,78",
+      "valor_total": 45.69,
+      "valor_pago": 42.78,
       "forma_pagamento": "CARTAOON"
     }
   },
@@ -67,10 +67,10 @@ produtos = [
     "categoria": "REFRIGERANTES",
     "quantidade_produto": 2,
     "unidade_medida_produto": "L",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "UN",
-    "valor_unitario": "8,99",
-    "valor_total": "8,99",
+    "valor_unitario": 8.99,
+    "valor_total": 8.99,
     "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
@@ -84,8 +84,8 @@ produtos = [
       "codigo_nota": "000230954"
     },
     "totais": {
-      "valor_total": "45,69",
-      "valor_pago": "42,78",
+      "valor_total": 45.69,
+      "valor_pago": 42.78,
       "forma_pagamento": "CARTAOON"
     }
   },
@@ -96,10 +96,10 @@ produtos = [
     "categoria": "ALIMENTOS",
     "quantidade_produto": 1,
     "unidade_medida_produto": "kg",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "UN",
-    "valor_unitario": "15,50",
-    "valor_total": "15,50",
+    "valor_unitario": 15.50,
+    "valor_total": 15.50,
     "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
@@ -113,8 +113,8 @@ produtos = [
       "codigo_nota": "000230954"
     },
     "totais": {
-      "valor_total": "45,69",
-      "valor_pago": "42,78",
+      "valor_total": 45.69,
+      "valor_pago": 42.78,
       "forma_pagamento": "CARTAOON"
     }
   },
@@ -125,10 +125,10 @@ produtos = [
     "categoria": "ALIMENTOS",
     "quantidade_produto": 500,
     "unidade_medida_produto": "g",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "UN",
-    "valor_unitario": "7,80",
-    "valor_total": "7,80",
+    "valor_unitario": 7.80,
+    "valor_total": 7.80,
     "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
@@ -142,8 +142,8 @@ produtos = [
       "codigo_nota": "000230954"
     },
     "totais": {
-      "valor_total": "45,69",
-      "valor_pago": "42,78",
+      "valor_total": 45.69,
+      "valor_pago": 42.78,
       "forma_pagamento": "CARTAOON"
     }
   },
@@ -154,10 +154,10 @@ produtos = [
     "categoria": "LATICINIOS",
     "quantidade_produto": 1,
     "unidade_medida_produto": "L",
-    "quantidade": "2",
+    "quantidade": 2,
     "unidade_medida": "UN",
-    "valor_unitario": "4,50",
-    "valor_total": "9,00",
+    "valor_unitario": 4.50,
+    "valor_total": 9.00,
     "desconto": None,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
@@ -171,8 +171,8 @@ produtos = [
       "codigo_nota": "000230954"
     },
     "totais": {
-      "valor_total": "45,69",
-      "valor_pago": "42,78",
+      "valor_total": 45.69,
+      "valor_pago": 42.78,
       "forma_pagamento": "CARTAOON"
     }
   },
@@ -183,11 +183,11 @@ produtos = [
     "categoria": "PADARIA",
     "quantidade_produto": 6,
     "unidade_medida_produto": "UN",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "PACOTE",
-    "valor_unitario": "7,00",
-    "valor_total": "7,00",
-    "desconto": "-1,00",
+    "valor_unitario": 7.00,
+    "valor_total": 7.00,
+    "desconto": -1.00,
     "estabelecimento": {
       "nome": "CIA BRASILEIRA DE DISTRIBUICAO",
       "cnpj": "47.508.411/0926-89",
@@ -200,8 +200,8 @@ produtos = [
       "codigo_nota": "000230954"
     },
     "totais": {
-      "valor_total": "45,69",
-      "valor_pago": "42,78",
+      "valor_total": 45.69,
+      "valor_pago": 42.78,
       "forma_pagamento": "CARTAOON"
     }
   },
@@ -212,10 +212,10 @@ produtos = [
     "categoria": "ALIMENTOS",
     "quantidade_produto": 5,
     "unidade_medida_produto": "kg",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "UN",
-    "valor_unitario": "24,90",
-    "valor_total": "24,90",
+    "valor_unitario": 24.90,
+    "valor_total": 24.90,
     "desconto": None,
     "estabelecimento": {
       "nome": "Supermercado Bom Preço",
@@ -229,8 +229,8 @@ produtos = [
       "codigo_nota": "0010001"
     },
     "totais": {
-      "valor_total": "87,50",
-      "valor_pago": "87,50",
+      "valor_total": 87.50,
+      "valor_pago": 87.50,
       "forma_pagamento": "DINHEIRO"
     }
   },
@@ -241,11 +241,11 @@ produtos = [
     "categoria": "ALIMENTOS",
     "quantidade_produto": 1,
     "unidade_medida_produto": "kg",
-    "quantidade": "2",
+    "quantidade": 2,
     "unidade_medida": "UN",
-    "valor_unitario": "6,80",
-    "valor_total": "13,60",
-    "desconto": "1,00",
+    "valor_unitario": 6.80,
+    "valor_total": 13.60,
+    "desconto": 1.00,
     "estabelecimento": {
       "nome": "Supermercado Bom Preço",
       "cnpj": "12.345.678/0001-90",
@@ -258,8 +258,8 @@ produtos = [
       "codigo_nota": "0010001"
     },
     "totais": {
-      "valor_total": "87,50",
-      "valor_pago": "87,50",
+      "valor_total": 87.50,
+      "valor_pago": 87.50,
       "forma_pagamento": "DINHEIRO"
     }
   },
@@ -270,10 +270,10 @@ produtos = [
     "categoria": "FARMÁCIA",
     "quantidade_produto": 20,
     "unidade_medida_produto": "comprimidos",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "UN",
-    "valor_unitario": "12,50",
-    "valor_total": "12,50",
+    "valor_unitario": 12.50,
+    "valor_total": 12.50,
     "desconto": None,
     "estabelecimento": {
       "nome": "Drogaria Saúde",
@@ -287,8 +287,8 @@ produtos = [
       "codigo_nota": "0004589"
     },
     "totais": {
-      "valor_total": "37,50",
-      "valor_pago": "37,50",
+      "valor_total": 37.50,
+      "valor_pago": 37.50,
       "forma_pagamento": "CARTAO CREDITO"
     }
   },
@@ -299,11 +299,11 @@ produtos = [
     "categoria": "FARMÁCIA",
     "quantidade_produto": 60,
     "unidade_medida_produto": "comprimidos",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "UN",
-    "valor_unitario": "25,00",
-    "valor_total": "25,00",
-    "desconto": "2,50",
+    "valor_unitario": 25.00,
+    "valor_total": 25.00,
+    "desconto": 2.50,
     "estabelecimento": {
       "nome": "Drogaria Saúde",
       "cnpj": "98.765.432/0001-10",
@@ -316,8 +316,8 @@ produtos = [
       "codigo_nota": "0004589"
     },
     "totais": {
-      "valor_total": "37,50",
-      "valor_pago": "37,50",
+      "valor_total": 37.50,
+      "valor_pago": 37.50,
       "forma_pagamento": "CARTAO CREDITO"
     }
   },
@@ -328,10 +328,10 @@ produtos = [
     "categoria": "ELETRÔNICOS",
     "quantidade_produto": 1,
     "unidade_medida_produto": "UN",
-    "quantidade": "1",
+    "quantidade": 1,
     "unidade_medida": "UN",
-    "valor_unitario": "89,90",
-    "valor_total": "89,90",
+    "valor_unitario": 89.90,
+    "valor_total": 89.90,
     "desconto": None,
     "estabelecimento": {
       "nome": "Tech Store",
@@ -345,8 +345,8 @@ produtos = [
       "codigo_nota": "0009876"
     },
     "totais": {
-      "valor_total": "134,90",
-      "valor_pago": "130,00",
+      "valor_total": 134.90,
+      "valor_pago": 130.00,
       "forma_pagamento": "CARTAO DEBITO"
     }
   }

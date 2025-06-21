@@ -4,6 +4,7 @@ from PIL import Image
 from app.config import client, MODEL_ID, MODEL_ID_LITE, MODEL_ID_15
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
+from pymongo.collection import Collection
 import ast
 
 
@@ -40,6 +41,12 @@ def formata_json(texto: str) -> str:
     texto_dict = json.loads(texto_ajustado)
     return texto_dict
 
+def converte_float(valor: str) -> float:
+    try:
+        return float(valor.replace(",", "."))
+    except:
+        return None
+
 
 def formata_registro(dicionario_compras: dict) -> list:
     #criar função par definir id
@@ -69,7 +76,10 @@ def formata_registro(dicionario_compras: dict) -> list:
         # print("string convertida em lista")
         if type(dicionario_compras["dados_da_compra"]["date"]) == list:
             dicionario_compras["dados_da_compra"]["date"]  = datetime(*data_compra, tzinfo=ZoneInfo("America/Sao_Paulo")) #, tzinfo=ZoneInfo("America/Sao_Paulo")) 
-        print("lista convertida em datetime")         
+        print("lista convertida em datetime")
+        totais =  dicionario_compras["totais"] 
+        totais["valor_total"] = converte_float(totais["valor_total"])    
+        totais["valor_pago"] = converte_float(totais["valor_pago"])     
         nova_entrada = {
               "id_compra": compra_id,
               "nome_produto": produto["nome_produto"],
@@ -77,15 +87,69 @@ def formata_registro(dicionario_compras: dict) -> list:
               "categoria": produto["categoria"],
               "quantidade_produto": produto["quantidade_produto"],
               "unidade_medida_produto": produto["unidade_medida_produto"],
-              "quantidade": item["quantidade"],
+              "quantidade": converte_float(item["quantidade"]),
               "unidade_medida": item["unidade_medida"],
-              "valor_unitario": item["valor_unitario"],
-              "valor_total_produto": item["valor_total_produto"],
-              "valor_desconto_produto": item["valor_desconto_produto"],
+              "valor_unitario": converte_float(item["valor_unitario"]),
+              "valor_total_produto": converte_float(item["valor_total_produto"]),
+              "valor_desconto_produto": converte_float(item["valor_desconto_produto"]),
               "estabelecimento": dicionario_compras["estabelecimento"],
               "dados_da_compra": dicionario_compras["dados_da_compra"],
-              "totais": dicionario_compras["totais"],
+              "totais": totais,
               "_created": _created
           }
         nova_compra.append(nova_entrada)
     return nova_compra
+
+def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
+    valor_procurado = consulta["valor_procurado"]
+    agregacao = consulta["agregacao"]
+    filtros = consulta["filtros"]
+    juncao = consulta["juncao"]
+    agrupar_por = consulta["agrupar_por"]
+
+    # Filtrando dados
+    condicoes = []
+    if juncao is None:
+        juncao = "$and"
+
+    for filtro in filtros:
+        campo = filtro["tipo"]
+        comparacao = filtro["comparacao"]
+        itens = filtro["itens"]
+        itens_formatados = []
+        for item in itens:
+            try:
+                itens_formatados.append(datetime.strptime(item, "%Y-%m-%d"))
+            except:
+                itens_formatados.append(item)
+
+
+        if comparacao == "$in":
+            condicoes.append({campo: {comparacao: itens_formatados}})
+        else:
+            condicoes.append({campo: {comparacao: itens_formatados[0]}})          
+
+    query = {juncao: condicoes}
+    print(consulta)
+    print(query)
+    # resultados = list(historico_compras.find(query, {'_id': 0}))
+
+    pipeline = [
+        {
+            "$match": query
+        },
+        {
+            "$group": {
+                # TODO implementar agrupar_por
+                # "_id": f"${agrupar_por}" if agrupar_por else None,
+                "_id":  None,
+                "retorno": {agregacao: f"${valor_procurado}"}
+            }
+        }
+    ]
+    print(pipeline)
+
+    resultados = list(historico_compras.aggregate(pipeline))
+    print(resultados)
+    return resultados
+
