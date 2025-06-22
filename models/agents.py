@@ -87,8 +87,10 @@ class Agents:
                 item['retorno'] = str(item['retorno'])
             if '_created' in item:
                 item['_created'] = str(item['_created'])
-            if "{'date':" in item:
+            try:
                 item["dados_da_compra"]['date'] = str(item["dados_da_compra"]['date'])
+            except:
+                pass
         response = self.client.models.generate_content(
             model=self.model,
             contents=self.prompts.prompt_analista + "\nPergunta usuário: " + pergunta + "\nRetorno da Consulta: " + json.dumps(base_dados)
