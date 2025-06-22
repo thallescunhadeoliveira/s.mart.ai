@@ -83,7 +83,7 @@ def main():
 
             try:
                 agente = agents.agente_orquestrador(user_input)
-                print(f"Agente: {agente}")
+                # print(f"Agente: {agente}")
                 agente = str(agente).strip()
                 if agente not in ("agente_conversador", "agente_buscador"):
                     agente = "agente_conversador"
@@ -100,8 +100,9 @@ def main():
 
             elif agente == "agente_buscador":
                 try:
+                    print(f"Pergunta:\n{user_input}", end="\n\n")
                     resultados = agents.agente_buscador(user_input, historico_compras)
-                    print(resultados)
+                    # print(resultados)
                 except Exception as e:
                     print("Erro no agente buscador", e)
                 # try:
@@ -154,7 +155,7 @@ def main():
                 return
         
         print(f"Extração: ")
-        pprint(extracao)
+        # pprint(extracao)
 
         with st.spinner('🛠️ Ajustando o arquivo...'):
             try:
@@ -184,7 +185,7 @@ def main():
                 return
         try:            
             feedback = agents.agente_feedback(registros_formatados)
-            print(feedback)
+            # print(feedback)
             st.session_state.chat_history.append(("s.mart.ai", feedback))
             st.rerun()
         except Exception as e:
