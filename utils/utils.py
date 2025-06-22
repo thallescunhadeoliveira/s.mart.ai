@@ -38,7 +38,7 @@ def pegar_arquivo(image_path: str):
         exit()
 
     with open(image_path, "rb") as image_file:
-        print(image_file)
+        # print(image_file)
         image_data = image_file.read()
     
     return image_data
@@ -57,7 +57,7 @@ def converte_float(valor: str) -> float:
         return None
 
 def converte_embedding(texto: str):
-    print(texto)
+    # print(texto)
     from models.agents import Agents  
     try:
         novo_agente = Agents(client, MODEL_ID_EMBEDDING)
@@ -65,7 +65,7 @@ def converte_embedding(texto: str):
     except Exception as e:
         print(f"{e}: Falha no agente de embedding")
         embedding = None
-    print(embedding)
+    # print(embedding)
     return embedding
 
 
@@ -81,7 +81,7 @@ def formata_registro(dicionario_compras: dict) -> list:
     numero_modelo = 0
     i = 0
     for item in dicionario_compras['itens_comprados']:
-        print(f"Item{i}: {item}")
+        # print(f"Item{i}: {item}")
         i  += 1
         try:
             produto = agents.agente_formatacao(item["produto"])
@@ -91,13 +91,13 @@ def formata_registro(dicionario_compras: dict) -> list:
             numero_modelo += 1
             produto = agents.agente_formatacao(item["produto"]) 
 
-        print(type(dicionario_compras["dados_da_compra"]["date"]))
+        # print(type(dicionario_compras["dados_da_compra"]["date"]))
         data_compra = dicionario_compras["dados_da_compra"]["date"]
         # data_compra = ast.literal_eval(dicionario_compras["dados_da_compra"]["date"])
         # print("string convertida em lista")
         if type(dicionario_compras["dados_da_compra"]["date"]) == list:
             dicionario_compras["dados_da_compra"]["date"]  = datetime(*data_compra, tzinfo=ZoneInfo("America/Sao_Paulo")) #, tzinfo=ZoneInfo("America/Sao_Paulo")) 
-        print("lista convertida em datetime")
+        # print("lista convertida em datetime")
         totais =  dicionario_compras["totais"] 
         totais["valor_total"] = converte_float(totais["valor_total"])    
         totais["valor_pago"] = converte_float(totais["valor_pago"])     
@@ -167,9 +167,9 @@ def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
             condicoes.append({campo: {comparacao: itens_formatados[0]}})          
 
     query = {juncao: condicoes}
-    print(consulta)
+    print(f"Parâmetros:\n{consulta}", end="\n\n")
     # print(vector_query_list)
-    print(query)
+    # print(query)
     # resultados = list(historico_compras.find(query, {'_id': 0}))
 
     pipeline = []
@@ -187,11 +187,11 @@ def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
 
     # for query_vector in vector_query_list:
     #     pipeline.insert(0, query_vector)
-    print(pipeline)
+    print(f"Consulta:\n{pipeline}", end="\n\n")
     # busca_vetores = list(historico_compras.aggregate(vector_query_list))
     # for item in busca_vetores:
     #     print(item)
     resultados = list(historico_compras.aggregate(pipeline))
-    print(resultados)
+    print(f"Retorno:\n{resultados}", end="\n\n\n")
     return resultados
 
