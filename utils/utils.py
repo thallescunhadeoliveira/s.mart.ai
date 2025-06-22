@@ -135,7 +135,9 @@ def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
     if juncao is None:
         juncao = "$and"
 
-    for filtro in filtros:
+    vector_query_list = []
+
+    for filtro in filtros:    
         campo = filtro["tipo"]
         comparacao = filtro["comparacao"]
         itens = filtro["itens"]
@@ -146,14 +148,24 @@ def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
             except:
                 itens_formatados.append(item)
 
+        if campo in ["nome_produto", "marca", "categoria"]:
+            vector_query = {
+                "queryVector": converte_embedding(campo),
+                "path": campo + "_embedding",
+                "numCandidates": 100,
+                "limit": 10,
+                "index": "vector_index"
+            }
+            vector_query_list.append(vector_query)
 
-        if comparacao == "$in":
+        elif comparacao == "$in":
             condicoes.append({campo: {comparacao: itens_formatados}})
         else:
             condicoes.append({campo: {comparacao: itens_formatados[0]}})          
 
     query = {juncao: condicoes}
     print(consulta)
+    print(vector_query_list)
     print(query)
     # resultados = list(historico_compras.find(query, {'_id': 0}))
 
@@ -170,6 +182,9 @@ def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
             }
         }
     ]
+
+    for query in vector_query_list:
+        pipeline.insert(0, query)
     print(pipeline)
 
     resultados = list(historico_compras.aggregate(pipeline))
