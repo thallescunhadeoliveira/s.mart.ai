@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 import os
 from dotenv import load_dotenv
 from samples import produtos
+import unicodedata
 
 # Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -25,9 +26,9 @@ colecao = db["historico_compras"]
 
 for item in produtos:
     item["_created"] = datetime.now(timezone.utc)
-    item["nome_produto_embedding"] = converte_embedding(item["nome_produto"]),
-    item["marca_embedding"] = converte_embedding(item["marca"]),
-    item["categoria_embedding"] = converte_embedding(item["categoria"]),    
+    item["nome_produto"] = unicodedata.normalize('NFKD', item["nome_produto"]).encode('ASCII', 'ignore').decode('utf-8').lower()
+    item["marca"] = unicodedata.normalize('NFKD', item["marca"]).encode('ASCII', 'ignore').decode('utf-8').lower()
+    item["categoria"] = unicodedata.normalize('NFKD', item["categoria"]).encode('ASCII', 'ignore').decode('utf-8').lower()
 
 # Inserir os dados na coleção
 resultado = colecao.insert_many(produtos)

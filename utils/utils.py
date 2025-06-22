@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from pymongo.collection import Collection
 import ast
+import unicodedata
 
 # Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -104,10 +105,7 @@ def formata_registro(dicionario_compras: dict) -> list:
               "id_compra": compra_id,
               "nome_produto": produto["nome_produto"],
               "marca": produto["marca"],
-              "categoria": produto["categoria"],
-              "nome_produto_embedding": converte_embedding(produto["nome_produto"]),
-              "marca_embedding": converte_embedding(produto["marca"]),
-              "categoria_embedding": converte_embedding(produto["categoria"]),              
+              "categoria": produto["categoria"],              
               "quantidade_produto": produto["quantidade_produto"],
               "unidade_medida_produto": produto["unidade_medida_produto"],
               "quantidade": converte_float(item["quantidade"]),
@@ -135,7 +133,7 @@ def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
     if juncao is None:
         juncao = "$and"
 
-    vector_query_list = []
+    # vector_query_list = []
 
     for filtro in filtros:    
         campo = filtro["tipo"]
@@ -146,47 +144,53 @@ def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
             try:
                 itens_formatados.append(datetime.strptime(item, "%Y-%m-%d"))
             except:
-                itens_formatados.append(item)
+                if campo in ["nome_produto", "marca", "categoria"]:
+                    item = item.lower()
+                    item = unicodedata.normalize('NFKD', item).encode('ASCII', 'ignore').decode('utf-8')
+                    itens_formatados.append(item)
+                else:
+                    itens_formatados.append(item)                   
+        #     vector_query = {
+        #         "$vectorSearch": {
+        #             "queryVector": converte_embedding(campo),
+        #             "path": campo + "_embedding",
+        #             "numCandidates": 100,
+        #             "limit": 10,
+        #             "index": "vector_index"
+        #         }
+        #     }
+        #     vector_query_list.append(vector_query)
 
-        if campo in ["nome_produto", "marca", "categoria"]:
-            vector_query = {
-                "queryVector": converte_embedding(campo),
-                "path": campo + "_embedding",
-                "numCandidates": 100,
-                "limit": 10,
-                "index": "vector_index"
-            }
-            vector_query_list.append(vector_query)
-
-        elif comparacao == "$in":
+        if comparacao == "$in":
             condicoes.append({campo: {comparacao: itens_formatados}})
         else:
             condicoes.append({campo: {comparacao: itens_formatados[0]}})          
 
     query = {juncao: condicoes}
     print(consulta)
-    print(vector_query_list)
+    # print(vector_query_list)
     print(query)
     # resultados = list(historico_compras.find(query, {'_id': 0}))
 
-    pipeline = [
-        {
-            "$match": query
-        },
-        {
-            "$group": {
-                # TODO implementar agrupar_por
-                # "_id": f"${agrupar_por}" if agrupar_por else None,
-                "_id":  None,
-                "retorno": {agregacao: f"${valor_procurado}"}
-            }
-        }
-    ]
+    pipeline = []
 
-    for query in vector_query_list:
-        pipeline.insert(0, query)
+    if agregacao == "$count":
+        pipeline.insert(0,{"$count": "retorno"})
+    elif agregacao:
+        pipeline.insert(0,{"$group": {"_id":  None,"retorno": {agregacao: f"${valor_procurado}"}}})
+        # TODO implementar agrupar_por
+        # "_id": f"${agrupar_por}" if agrupar_por else None,
+
+        
+    if condicoes:
+        pipeline.insert(0,{"$match": query})
+
+    # for query_vector in vector_query_list:
+    #     pipeline.insert(0, query_vector)
     print(pipeline)
-
+    # busca_vetores = list(historico_compras.aggregate(vector_query_list))
+    # for item in busca_vetores:
+    #     print(item)
     resultados = list(historico_compras.aggregate(pipeline))
     print(resultados)
     return resultados

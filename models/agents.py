@@ -4,6 +4,7 @@ import sys
 from google.genai import types
 from PIL import Image
 from datetime import datetime, timezone
+import unicodedata
 
 # Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -36,6 +37,19 @@ class Agents:
             config={"tools": [{"google_search": {}}]}
         )
         produto = formata_json(response.text)
+        try:
+            produto["nome_produto"] = unicodedata.normalize('NFKD', produto["nome_produto"]).encode('ASCII', 'ignore').decode('utf-8').lower()
+        except:
+            produto["nome_produto"] = None
+        try:
+            produto["marca"] = unicodedata.normalize('NFKD', produto["marca"]).encode('ASCII', 'ignore').decode('utf-8').lower()
+        except:
+            produto["marca"] = None
+        try:
+            produto["categoria"] = unicodedata.normalize('NFKD', produto["categoria"]).encode('ASCII', 'ignore').decode('utf-8').lower()
+        except:
+            produto["categoria"] = None
+        
         return produto
     
 
@@ -71,10 +85,10 @@ class Agents:
                 item['_id'] = str(item['_id'])
             if 'retorno' in item:
                 item['retorno'] = str(item['retorno'])
-            # if '_created' in item:
-            #     item['_created'] = str(item['_created'])
-            # if item["dados_da_compra"]['date']:
-            #     item["dados_da_compra"]['date'] = str(item["dados_da_compra"]['date'])
+            if '_created' in item:
+                item['_created'] = str(item['_created'])
+            if "{'date':" in item:
+                item["dados_da_compra"]['date'] = str(item["dados_da_compra"]['date'])
         response = self.client.models.generate_content(
             model=self.model,
             contents=self.prompts.prompt_analista + "\nPergunta usuário: " + pergunta + "\nRetorno da Consulta: " + json.dumps(base_dados)

@@ -119,11 +119,11 @@ class Prompts:
         }
 
         ### Instruções:
-        - Sempre use letras MAIÚSCULAS no campo "marca".
         - O campo "nome_produto" deve ser genérico (ex: CAFÉ, SABONETE).
         - A categoria deve ser padronizada comercialmente.
         - A quantidade e a unidade devem refletir o tamanho da embalagem, com correções se necessário.
         - Não escreva nenhuma explicação ou comentário, apenas retorne o JSON final.
+        - Se não souber, deixa o valor como Null
         """
 
         self.prompt_feedback = """
@@ -189,12 +189,12 @@ class Prompts:
             {
             "tipo": "categoria",
             "itens": ["BEBIDAS", "PÃO"],
-            "comparacao": "$eq"
+            "comparacao": "$in"
             },
             {
-            "tipo": "ano",
-            "itens": [2024, 2025],
-            "comparacao": "$eq"
+            "tipo": "dados_da_compra.date",
+            "itens": "2024-01-01",
+            "comparacao": "$gte"
             }
         ],
         "juncao": "$and",
