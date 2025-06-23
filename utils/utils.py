@@ -89,6 +89,7 @@ def formata_registro(dicionario_compras: dict) -> list:
             print(f"{e}: Limite de cota da API atingida. Alterando de agente")
             agents = Agents(client,modelos_fallback[numero_modelo]) 
             numero_modelo += 1
+            numero_modelo = numero_modelo % len(modelos_fallback)
             produto = agents.agente_formatacao(item["produto"]) 
 
         # print(type(dicionario_compras["dados_da_compra"]["date"]))
