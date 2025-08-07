@@ -16,6 +16,7 @@ __pycache__/
 
 # Dados sensíveis e arquivos grandes
 data/
+files/
 *.jpg
 *.png
 *.pdf
