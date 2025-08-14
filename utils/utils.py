@@ -226,8 +226,8 @@ def extrair_dados_nfe(url: str) -> dict:
     cnpj_formatado = re.sub(r'\D', '', texto_cnpj)
     texto_endereco = soup.find(id="conteudo").find_all("div")[1].find_all("div")[2].get_text(strip=True)
     endereco_formatado = re.sub(r'[\t\n\r]', '', texto_endereco)
-    cidade = 
-    estado = 
+    cidade = None
+    estado = None
     estabelecimento = soup.find(id="u20").text
 
     totais_numeros = soup.find(id="totalNota").find_all(class_="totalNumb")
