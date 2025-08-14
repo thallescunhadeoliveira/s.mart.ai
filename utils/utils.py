@@ -243,48 +243,48 @@ def extrair_dados_nfe(url: str) -> dict:
     forma_pagamento = totais_textos[0].text
     forma_pagamento = re.sub(r'[\t\n\r]', '', forma_pagamento)
 
-    dicionario_compras=   {
-        "estabelecimento": {
-            "nome": estabelecimento,
-            "cnpj": cnpj_formatado,
-            "cidade": cidade,
-            "uf": estado
-        },
-        "dados_da_compra": {
-            "date": [ANO, MÊS, DIA, HORA, MINUTO, SEGUNDO],
-            "numero_cupom": "NÚMERO DO CUPOM",
-            "codigo_nota": "CÓDIGO DA NOTA"
-        },
-        "itens_comprados": [
-            {
-            "produto": "NOME DO ITEM",
-            "quantidade": "QUANTIDADE DE UNIDADES COMPRADAS",
-            "unidade_medida": "MEDIDA EM CONTAGEM DE ITENS, KG, LITROS ETC",
-            "valor_unitario": "VALOR UNITÁRIO",
-            "valor_total_produto": "VALOR TOTAL",
-            "valor_desconto_produto": "VALOR NEGATIVO REFERENTE AO DESCONTO QUE APARECE NA LINHA EXATAMENTE ABAIXO DO ITEM"
-            }
-        ],
-        "totais": {
-            "valor_total": "TOTAL DA COMPRA",
-            "valor_desconto": "VALOR TOTAL DO DESCONTO DA COMPRA SENDO O VALOR NEGATIVO REFERENTE AO DESCONTO QUE APARECE NA LINHA EXATAMENTE ABAIXO DO VALOR TOTAL E ACIMA DO VALOR PAGO",
-            "valor_pago": "VALOR PAGO",
-            "forma_pagamento": "FORMA DE PAGAMENTO"
-        },
-        "impostos": {
-            "valor_aproximado": "VALOR DE IMPOSTOS APROX.",
-            "percentual_total": null,
-            "detalhamento": {
-            "federal": {
-                "valor": "IMPOSTO FEDERAL",
-                "percentual": "PERCENTUAL"
-            },
-            "estadual": {
-                "valor": "IMPOSTO ESTADUAL",
-                "percentual": "PERCENTUAL"
-            }
-            }
-        }
-        }
+    # dicionario_compras=   {
+    #     "estabelecimento": {
+    #         "nome": estabelecimento,
+    #         "cnpj": cnpj_formatado,
+    #         "cidade": cidade,
+    #         "uf": estado
+    #     },
+    #     "dados_da_compra": {
+    #         "date": [ANO, MÊS, DIA, HORA, MINUTO, SEGUNDO],
+    #         "numero_cupom": "NÚMERO DO CUPOM",
+    #         "codigo_nota": "CÓDIGO DA NOTA"
+    #     },
+    #     "itens_comprados": [
+    #         {
+    #         "produto": "NOME DO ITEM",
+    #         "quantidade": "QUANTIDADE DE UNIDADES COMPRADAS",
+    #         "unidade_medida": "MEDIDA EM CONTAGEM DE ITENS, KG, LITROS ETC",
+    #         "valor_unitario": "VALOR UNITÁRIO",
+    #         "valor_total_produto": "VALOR TOTAL",
+    #         "valor_desconto_produto": "VALOR NEGATIVO REFERENTE AO DESCONTO QUE APARECE NA LINHA EXATAMENTE ABAIXO DO ITEM"
+    #         }
+    #     ],
+    #     "totais": {
+    #         "valor_total": "TOTAL DA COMPRA",
+    #         "valor_desconto": "VALOR TOTAL DO DESCONTO DA COMPRA SENDO O VALOR NEGATIVO REFERENTE AO DESCONTO QUE APARECE NA LINHA EXATAMENTE ABAIXO DO VALOR TOTAL E ACIMA DO VALOR PAGO",
+    #         "valor_pago": "VALOR PAGO",
+    #         "forma_pagamento": "FORMA DE PAGAMENTO"
+    #     },
+    #     "impostos": {
+    #         "valor_aproximado": "VALOR DE IMPOSTOS APROX.",
+    #         "percentual_total": null,
+    #         "detalhamento": {
+    #         "federal": {
+    #             "valor": "IMPOSTO FEDERAL",
+    #             "percentual": "PERCENTUAL"
+    #         },
+    #         "estadual": {
+    #             "valor": "IMPOSTO ESTADUAL",
+    #             "percentual": "PERCENTUAL"
+    #         }
+    #         }
+    #     }
+    #     }
 
-    return dicionario_compras
+    #return dicionario_compras
