@@ -2,12 +2,18 @@ import os
 import sys
 import json
 import time
+import requests
+import re
+import cv2
 from PIL import Image
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from pymongo.collection import Collection
+from bs4 import BeautifulSoup
+from pyzbar.pyzbar import decode
 import ast
 import unicodedata
+
 
 # Adiciona o diretório raiz ao sys.path para permitir imports relativos entre pastas
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -196,3 +202,89 @@ def filtrar_dados(consulta: dict, historico_compras: Collection) -> list:
     print(f"Retorno:\n{resultados}", end="\n\n\n")
     return resultados
 
+def ler_qrcode(arquivo: str) -> str:
+    # Leitura do QR Code
+    img = cv2.imread(arquivo)
+    results = decode(img)
+    url = results[0].data.decode("utf-8")
+
+def extrair_dados_nfe(url: str) -> dict:
+    headers = {
+        "User-Agent": "Mozilla/5.0",  # Para parecer um navegador real
+    }
+    response = requests.get(url, headers=headers)
+    html = response.text
+    soup = BeautifulSoup(html, 'html.parser')
+    registros = soup.find_all('tr')
+
+    for registro in registros:
+        print(f"Produto: {registro.find(class_= 'txtTit').text}")
+        print(f"Quantidade: {registro.find(class_= 'Rqtd').text}")
+        print(f"Valor: {registro.find(class_= 'valor').text}")
+
+    texto_cnpj = soup.find(id="conteudo").find_all("div")[1].find_all("div")[1].text
+    cnpj_formatado = re.sub(r'\D', '', texto_cnpj)
+    texto_endereco = soup.find(id="conteudo").find_all("div")[1].find_all("div")[2].get_text(strip=True)
+    endereco_formatado = re.sub(r'[\t\n\r]', '', texto_endereco)
+    cidade = 
+    estado = 
+    estabelecimento = soup.find(id="u20").text
+
+    totais_numeros = soup.find(id="totalNota").find_all(class_="totalNumb")
+    totais_textos = soup.find(id="totalNota").find_all(class_="tx")
+
+    qtd_total_itens = totais_numeros[0].text
+    valor_total = totais_numeros[1].text
+    descontos = totais_numeros[2].text
+    valor_a_pagar = totais_numeros[3].text
+    valor_pago = totais_numeros[5].text
+    troco = totais_numeros[6].text
+
+    forma_pagamento = totais_textos[0].text
+    forma_pagamento = re.sub(r'[\t\n\r]', '', forma_pagamento)
+
+    dicionario_compras=   {
+        "estabelecimento": {
+            "nome": estabelecimento,
+            "cnpj": cnpj_formatado,
+            "cidade": cidade,
+            "uf": estado
+        },
+        "dados_da_compra": {
+            "date": [ANO, MÊS, DIA, HORA, MINUTO, SEGUNDO],
+            "numero_cupom": "NÚMERO DO CUPOM",
+            "codigo_nota": "CÓDIGO DA NOTA"
+        },
+        "itens_comprados": [
+            {
+            "produto": "NOME DO ITEM",
+            "quantidade": "QUANTIDADE DE UNIDADES COMPRADAS",
+            "unidade_medida": "MEDIDA EM CONTAGEM DE ITENS, KG, LITROS ETC",
+            "valor_unitario": "VALOR UNITÁRIO",
+            "valor_total_produto": "VALOR TOTAL",
+            "valor_desconto_produto": "VALOR NEGATIVO REFERENTE AO DESCONTO QUE APARECE NA LINHA EXATAMENTE ABAIXO DO ITEM"
+            }
+        ],
+        "totais": {
+            "valor_total": "TOTAL DA COMPRA",
+            "valor_desconto": "VALOR TOTAL DO DESCONTO DA COMPRA SENDO O VALOR NEGATIVO REFERENTE AO DESCONTO QUE APARECE NA LINHA EXATAMENTE ABAIXO DO VALOR TOTAL E ACIMA DO VALOR PAGO",
+            "valor_pago": "VALOR PAGO",
+            "forma_pagamento": "FORMA DE PAGAMENTO"
+        },
+        "impostos": {
+            "valor_aproximado": "VALOR DE IMPOSTOS APROX.",
+            "percentual_total": null,
+            "detalhamento": {
+            "federal": {
+                "valor": "IMPOSTO FEDERAL",
+                "percentual": "PERCENTUAL"
+            },
+            "estadual": {
+                "valor": "IMPOSTO ESTADUAL",
+                "percentual": "PERCENTUAL"
+            }
+            }
+        }
+        }
+
+    return dicionario_compras

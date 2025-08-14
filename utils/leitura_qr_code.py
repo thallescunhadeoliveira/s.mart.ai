@@ -1,4 +1,5 @@
 import requests
+import re
 import cv2
 from bs4 import BeautifulSoup
 from pyzbar.pyzbar import decode
@@ -27,6 +28,35 @@ for registro in registros:
     print(f"Quantidade: {registro.find(class_= 'Rqtd').text}")
     print(f"Valor: {registro.find(class_= 'valor').text}")
 
+texto_cnpj = soup.find(id="conteudo").find_all("div")[1].find_all("div")[1].text
+cnpj_formatado = re.sub(r'\D', '', texto_cnpj)
+
+texto_endereco = soup.find(id="conteudo").find_all("div")[1].find_all("div")[2].get_text(strip=True)
+endereco_formatado = re.sub(r'[\t\n\r]', '', texto_endereco)
+
+print(f"Estabelecimento: {soup.find(id="u20").text}")
+print(f"CNPJ: {cnpj_formatado}")
+print(f"Endereço: {endereco_formatado}")
+
+totais_numeros = soup.find(id="totalNota").find_all(class_="totalNumb")
+totais_textos = soup.find(id="totalNota").find_all(class_="tx")
+qtd_total_itens = totais_numeros[0].text
+valor_total = totais_numeros[1].text
+descontos = totais_numeros[2].text
+valor_a_pagar = totais_numeros[3].text
+valor_pago = totais_numeros[5].text
+troco = totais_numeros[6].text
+forma_pagamento = totais_textos[0].text
+forma_pagamento = re.sub(r'[\t\n\r]', '', forma_pagamento)
+
+
+print(f"qtd_total_itens: {qtd_total_itens}")
+print(f"valor_total: {valor_total}")
+print(f"descontos: {descontos}")
+print(f"valor_a_pagar: {valor_a_pagar}")
+print(f"valor_pago: {valor_pago}")
+print(f"troco: {troco}")
+print(f"forma_pagamento: {forma_pagamento}")
 # Quantidade total de itens
 # Valor total
 # Descontos
