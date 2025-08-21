@@ -217,10 +217,24 @@ def extrair_dados_nfe(url: str) -> dict:
     soup = BeautifulSoup(html, 'html.parser')
     registros = soup.find_all('tr')
 
+    itens_comprados = []
     for registro in registros:
         print(f"Produto: {registro.find(class_= 'txtTit').text}")
         print(f"Quantidade: {registro.find(class_= 'Rqtd').text}")
         print(f"Valor: {registro.find(class_= 'valor').text}")
+        item = {}
+        item["produto"] = registro.find(class_= 'txtTit').text
+        item["quantidade"] = registro.find(class_= 'Rqtd').text
+        item["valor_total_produto"] = registro.find(class_= 'valor').text
+        itens_comprados.append(item)
+    #         {
+    #         "produto": "NOME DO ITEM",
+    #         "quantidade": "QUANTIDADE DE UNIDADES COMPRADAS",
+    #         "unidade_medida": "MEDIDA EM CONTAGEM DE ITENS, KG, LITROS ETC",
+    #         "valor_unitario": "VALOR UNITÁRIO",
+    #         "valor_total_produto": "VALOR TOTAL",
+    #         "valor_desconto_produto": "VALOR NEGATIVO REFERENTE AO DESCONTO QUE APARECE NA LINHA EXATAMENTE ABAIXO DO ITEM"
+    #         }
 
     texto_cnpj = soup.find(id="conteudo").find_all("div")[1].find_all("div")[1].text
     cnpj_formatado = re.sub(r'\D', '', texto_cnpj)
@@ -242,6 +256,9 @@ def extrair_dados_nfe(url: str) -> dict:
 
     forma_pagamento = totais_textos[0].text
     forma_pagamento = re.sub(r'[\t\n\r]', '', forma_pagamento)
+
+    
+
 
     # dicionario_compras=   {
     #     "estabelecimento": {
